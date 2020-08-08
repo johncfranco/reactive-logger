@@ -10,9 +10,13 @@ The library has three main goals:
 
 ## Maven Dependency
 
-This library is new and and I'm still working on making it available in the Maven central repository.
-I expect to have this done by the end of August 2020.
-I'll update this section once it becomes available.
+```xml
+<dependency>
+  <groupId>com.github.johncfranco</groupId>
+  <artifactId>reactive-logger</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
 
 ## Examples of Use
 

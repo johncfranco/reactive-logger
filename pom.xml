@@ -6,7 +6,7 @@
 
   <groupId>com.github.johncfranco</groupId>
   <artifactId>reactive-logger</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <name>reactive-logger</name>
   <description>A Java library adapting slf4j for reactive applications.</description>
@@ -150,7 +150,10 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
+      </plugins>
+    </pluginManagement>
 
+      <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
@@ -158,7 +161,6 @@
           <executions>
             <execution>
               <id>attach-sources</id>
-              <phase>verify</phase>
               <goals>
                 <goal>jar-no-fork</goal>
               </goals>
@@ -173,9 +175,8 @@
           <executions>
             <execution>
               <id>attach-javadocs</id>
-              <phase>verify</phase>
               <goals>
-                <goal>jar-no-fork</goal>
+                <goal>jar</goal>
               </goals>
             </execution>
           </executions>
@@ -197,7 +198,6 @@
           </plugin>
 
       </plugins>
-    </pluginManagement>
   </build>
 
     <distributionManagement>

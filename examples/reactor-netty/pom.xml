@@ -6,7 +6,7 @@
 
     <groupId>com.github.johncfranco</groupId>
     <artifactId>reactive-logger-reactor-netty-example</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -46,7 +46,7 @@
 		<dependency>
 		    <groupId>com.github.johncfranco</groupId>
 		    <artifactId>reactive-logger</artifactId>
-		    <version>1.0.0-SNAPSHOT</version>
+		    <version>1.0.0</version>
 		</dependency>
 
         <dependency>
