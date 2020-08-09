@@ -1,4 +1,5 @@
 # reactive-logger
+[![Build Status](https://travis-ci.com/johncfranco/reactive-logger.svg?branch=develop)](https://travis-ci.com/johncfranco/reactive-logger) [![Test Coverage](https://api.codeclimate.com/v1/badges/44f5a5a2e944e5750d15/test_coverage)](https://codeclimate.com/github/johncfranco/reactive-logger/test_coverage)
 
 `reactive-logger` is a Java library adapting the `slf4j` logging library for reactive applications.
 It treats the various message-writing methods in the slf4j `Logger` interface as blocking I/O by wrapping
