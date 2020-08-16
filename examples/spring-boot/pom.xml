@@ -6,7 +6,7 @@
 
     <groupId>com.github.johncfranco</groupId>
     <artifactId>reactive-logger-spring-boot-example</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -37,7 +37,7 @@
 		<dependency>
 		    <groupId>com.github.johncfranco</groupId>
 		    <artifactId>reactive-logger</artifactId>
-		    <version>1.0.1-SNAPSHOT</version>
+		    <version>1.0.1</version>
 		</dependency>
 
         <dependency>

@@ -15,7 +15,7 @@ The library has three main goals:
 <dependency>
   <groupId>com.github.johncfranco</groupId>
   <artifactId>reactive-logger</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 

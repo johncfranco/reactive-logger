@@ -6,7 +6,7 @@
 
   <groupId>com.github.johncfranco</groupId>
   <artifactId>reactive-logger</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.1</version>
 
   <name>reactive-logger</name>
   <description>A Java library adapting slf4j for reactive applications.</description>
