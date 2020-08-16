@@ -22,6 +22,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.slf4j.Logger;
+import org.slf4j.MDC;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 import reactor.core.scheduler.Scheduler;
@@ -70,6 +71,15 @@ public class ReactiveLoggerTest {
         final Map<String, String> mdc = ImmutableMap.of(randomText(), randomText());
         final Context context = Context.of(ReactiveLogger.DEFAULT_REACTOR_CONTEXT_MDC_KEY, mdc);
         assertThat(logger.readMDC(context), equalTo(Optional.of(mdc)));
+    }
+
+    @Test
+    public void takeMDCSnapshot() {
+        final Map<String, String> mdc = ImmutableMap.of(randomText(), randomText());
+        final Context context = Context.of(ReactiveLogger.DEFAULT_REACTOR_CONTEXT_MDC_KEY, mdc);
+        try (final MDCSnapshot snapshot = logger.takeMDCSnapshot(context)) {
+            assertThat(MDC.getCopyOfContextMap(), equalTo(mdc));
+        }
     }
 
     @Test

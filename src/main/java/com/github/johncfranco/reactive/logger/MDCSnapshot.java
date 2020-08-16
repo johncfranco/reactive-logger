@@ -21,6 +21,7 @@ import reactor.util.annotation.Nullable;
 import reactor.util.context.Context;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * A closeable object encapsulating the operations of populating the {@link MDC} upon creation
@@ -68,6 +69,17 @@ public class MDCSnapshot implements AutoCloseable {
      */
     public static MDCSnapshot of(@Nullable final Map<String, String> context) {
         return new MDCSnapshot(context);
+    }
+
+    /**
+     * Erase the {@link MDC} and return an {@link AutoCloseable} object.
+     * Intended for use in {@link java.util.Optional#orElseGet(Supplier)}.
+     *
+     * @return A new {@link MDCSnapshot} instance.
+     * @since 1.0.1
+     */
+    public static MDCSnapshot empty() {
+        return new MDCSnapshot(null);
     }
 
     /**
