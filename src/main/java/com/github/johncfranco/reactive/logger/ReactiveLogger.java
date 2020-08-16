@@ -140,6 +140,25 @@ public class ReactiveLogger {
     }
 
     /**
+     * Populate the {@link org.slf4j.MDC} from the given subscriber {@link Context}
+     * using the context key provided when creating this instance.
+     *
+     * If the key is absent, create an empty snapshot instead that clears the {@link org.slf4j.MDC}
+     * of any information left over from prior uses in the current thread.
+     *
+     * This is a convenience method for use in try-with-resources statements wrapping
+     * invocations of the imperative logger.
+     *
+     * @param context the subscriber {@link Context} to use
+     * @return an MDCSnapshot instance that clears the MDC when closed.
+     * @see MDCSnapshot
+     * @since 1.0.1
+     */
+    public MDCSnapshot takeMDCSnapshot(final Context context) {
+        return readMDC(context).map(MDCSnapshot::of).orElseGet(MDCSnapshot::empty);
+    }
+
+    /**
      * Return the name of this <code>ReactiveLogger</code> instance.
      *
      * This uses the name of the slf4j {@link Logger} provided when creating this instance.
@@ -1063,7 +1082,7 @@ public class ReactiveLogger {
     private Mono<Context> wrap(final Runnable runnable) {
         return Mono.subscriberContext()
                 .map(context -> {
-                    try (final MDCSnapshot snapshot = MDCSnapshot.of(readMDC(context).orElse(null))) {
+                    try (final MDCSnapshot snapshot = takeMDCSnapshot(context)) {
                         runnable.run();
                     }
                     return context;

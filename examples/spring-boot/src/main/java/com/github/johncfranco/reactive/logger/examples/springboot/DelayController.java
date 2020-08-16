@@ -27,13 +27,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
-import reactor.util.context.Context;
 import reactor.util.function.Tuple2;
 
 import java.time.DateTimeException;
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 public class DelayController {
@@ -60,14 +57,7 @@ public class DelayController {
                     .map(Tuple2::getT2);
         }
 
-        /*
-        The following could be simplified by an overload of Mono.doOnCancel that took a Consumer<Context>
-        rather than a Runnable.
-        The local logContextMap variable would not be necessary, and the chain would start
-        with the log.info statement.
-        Here's how it would look:
-
-        return log.info("delay {} requested", delayText)
+        return Mono.deferWithContext(context -> log.info("delay {} requested", delayText)
                 .zipWith(Mono.delay(delay))
                 .elapsed()
                 .map(Tuple2::getT1)
@@ -76,36 +66,13 @@ public class DelayController {
                 .flatMap(delayLengthText -> log.info("returning after delay {}...", delayLengthText)
                         .zipWith(createResponse(HttpStatus.OK, delayLengthText)))
                 .map(Tuple2::getT2)
-                .doOnCancel(context -> {
-                    try (final MDCSnapshot snapshot = MDCSnapshot.of(log.readMDC(context).orElse(null))) {
-                        log.imperative().info("delay request cancelled.");
-                    }
-                })
-                .cancelOn(log.scheduler());
-
-        I'll try submitting a pull request to reactor-core and update this example if they accept it.
-        */
-
-        final Map<String, String> logContextMap = new HashMap<>(1);
-        return Mono.subscriberContext()
-                .map(log::readMDC)
-                .doOnNext(mdc -> mdc.ifPresent(logContextMap::putAll))
-                .then(log.info("delay {} requested", delayText)
-                        .zipWith(Mono.delay(delay))
-                )
-                .elapsed()
-                .map(Tuple2::getT1)
-                .map(Duration::ofMillis)
-                .map(Duration::toString)
-                .flatMap(delayLengthText -> log.info("returning after delay {}...", delayLengthText)
-                        .zipWith(createResponse(HttpStatus.OK, delayLengthText)))
-                .map(Tuple2::getT2)
                 .doOnCancel(() -> {
-                    try (final MDCSnapshot snapshot = MDCSnapshot.of(logContextMap)) {
+                    try (final MDCSnapshot snapshot = log.takeMDCSnapshot(context)) {
                         log.imperative().info("delay request cancelled.");
                     }
                 })
-                .cancelOn(log.scheduler());
+                .cancelOn(log.scheduler())
+        );
     }
 
     private Mono<ResponseEntity<String>> createResponse(final HttpStatus status, final String responseBody) {
