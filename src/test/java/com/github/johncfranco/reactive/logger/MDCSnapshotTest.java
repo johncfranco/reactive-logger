@@ -40,4 +40,12 @@ public class MDCSnapshotTest {
 
         assertThat(MDC.getCopyOfContextMap(), anyOf(anEmptyMap(), nullValue()));
     }
+
+    @Test
+    public void createEmptyInstance() {
+        MDC.put(randomText(), randomText());
+        try (final MDCSnapshot snapshot = MDCSnapshot.empty()) {
+            assertThat(MDC.getCopyOfContextMap(), anyOf(anEmptyMap(), nullValue()));
+        }
+    }
 }
