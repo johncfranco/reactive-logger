@@ -73,7 +73,7 @@ To ensure that the handler runs on the appropriate scheduler, precede the `doOnC
 
 Here's the form:
 ```java
-Flux.deferContextual(context -> Flux.someOtherCreationMethod()
+Flux.deferWithContext(context -> Flux.someOtherCreationMethod()
     //...some chain of operators...
     .publishOn(log.scheduler())
     .doOnComplete(() -> {
@@ -88,7 +88,7 @@ Flux.deferContextual(context -> Flux.someOtherCreationMethod()
 
 The `doOnCancel` case follows the `doOnComplete` example except that it replaces the `publishOn` call with a `cancelOn` call:
 ```java
-Flux.deferContextual(context -> Flux.someOtherCreationMethod()
+Flux.deferWithContext(context -> Flux.someOtherCreationMethod()
     //...some chain of operators...
     .doOnCancel(() -> {
         try (final MDCSnapshot snapshot = log.takeMDCSnapshot(context)) {
